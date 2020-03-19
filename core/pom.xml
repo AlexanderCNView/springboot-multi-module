@@ -6,7 +6,6 @@
 		<groupId>com.itkee</groupId>
 		<artifactId>boot</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.itkee</groupId>
 	<artifactId>core</artifactId>
