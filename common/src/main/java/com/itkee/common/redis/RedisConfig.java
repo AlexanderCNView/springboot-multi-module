@@ -18,11 +18,11 @@ public class RedisConfig {
     private RedisConnectionFactory factory;
 
     @Resource
-    private RedisSerializer fastJson2JsonRedisSerializer;
+    private RedisSerializer<Object> fastJson2JsonRedisSerializer;
 
     @Bean(name = "redisTemplate")
-    public RedisTemplate<String, Object> fastJsonRedisTemplate() {
-        RedisTemplate<String, Object> template = new RedisTemplate<>();
+    public RedisTemplate<Object, Object> fastJsonRedisTemplate() {
+        RedisTemplate<Object, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(factory);
         //redis开启事务
         template.setEnableTransactionSupport(true);
@@ -30,13 +30,12 @@ public class RedisConfig {
         template.setValueSerializer(fastJson2JsonRedisSerializer);
         template.setHashKeySerializer(new StringRedisSerializer());
         template.setHashValueSerializer(fastJson2JsonRedisSerializer);
-        template.setDefaultSerializer(new StringRedisSerializer());
         template.afterPropertiesSet();
         return template;
     }
 
     @Bean
-    public RedisSerializer fastJson2JsonRedisSerializer() {
+    public RedisSerializer<Object> fastJson2JsonRedisSerializer() {
         return new FastJson2JsonRedisSerializer<>(Object.class);
     }
 }

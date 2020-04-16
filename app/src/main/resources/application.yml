@@ -1,13 +1,13 @@
 
 project:
   ip: 192.168.1.234
+  web-url: http://xcx.rzbus.cn:8901/busline/v1/getRealTimeInfo
+
 
 server:
   port: 8081
 logging:
-  level:
-    com.itkee.app: debug
-    com.itkee.core: info
+  config: classpath:log4j2-spring.xml
 spring:
   devtools:
     restart:
@@ -16,7 +16,7 @@ spring:
       additional-paths: src/main/java
   #redis
   redis:
-    host: 120.27.62.169
+    host: 120.0.0.1
     password:
     port: 6379
     jedis:
@@ -25,9 +25,9 @@ spring:
         max-wait: -1
   datasource:
     druid:
-      url: jdbc:mysql://120.27.62.169:3306/flow.top?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+      url: jdbc:mysql://120.0.0.1:3306/boot?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
       username: root
-      password: root
+      password: 1128
       driver-class-name: com.mysql.cj.jdbc.Driver
       initial-size: 5
       min-idle: 5
@@ -35,20 +35,22 @@ spring:
       max-wait: 60000
       time-between-eviction-runs-millis: 60000
       min-evictable-idle-time-millis: 300000
-      test-while-idle: true
+      test-while-idle: on
       test-on-borrow: false
       test-on-return: false
-      pool-prepared-statements: true
+      pool-prepared-statements: on
       max-open-prepared-statements: 20
       max-pool-prepared-statement-per-connection-size: 20
+  profiles:
+    active: dev
 #mybatis配置
 mybatis-plus:
   type-aliases-package: com.itkee.app.pojo
   mapper-locations: classpath:mapper/*.xml
   configuration:
-    cache-enabled: true
-    lazy-loading-enabled: true
-    map-underscore-to-camel-case: true
+    cache-enabled: on
+    lazy-loading-enabled: on
+    map-underscore-to-camel-case: on
   global-config:
     db-config:
       id-type: auto
