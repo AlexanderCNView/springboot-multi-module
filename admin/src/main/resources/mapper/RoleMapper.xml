@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itkee.admin.mapper.RoleMapper">
+    <select id="getRoles" resultType="com.itkee.admin.entity.dto.RoleDTO">
+        select r.id as roleId,r.enable,r.name,r.code,r.create_time
+        from role r where r.deleted = ${@com.itkee.admin.constant.Constant@NOT_DELETED} order by r.create_time asc
+    </select>
+    <update id="enableRoleWithIds">
+        update role set enable = #{enable} where id in (${ids})
+    </update>
+    <select id="selectCountRoleWithName" resultType="int">
+        select count(name) from role where name = #{name} and deleted = ${@com.itkee.admin.constant.Constant@NOT_DELETED}
+    </select>
+    <insert id="insertRoleMenus" parameterType="List" useGeneratedKeys="true" keyProperty="id">
+        insert into role_menu (roleId, menuId) values
+        <foreach collection="roleMenus" item="item" index="index" separator=",">
+            (#{item.roleId}, #{item.menuId})
+        </foreach>
+    </insert>
+    <delete id="deleteRoleMenuByRoleId" parameterType="Integer">
+        delete from role_menu where roleId = #{roleId}
+    </delete>
+</mapper>

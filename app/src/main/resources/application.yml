@@ -1,60 +1,11 @@
-
-project:
-  ip: 192.168.1.234
-  web-url: http://xcx.rzbus.cn:8901/busline/v1/getRealTimeInfo
-
+spring:
+  profiles:
+    include: core
 
 server:
-  port: 8081
-logging:
-  config: classpath:log4j2-spring.xml
-spring:
-  devtools:
-    restart:
-      enabled: false
-      #设置重启目录
-      additional-paths: src/main/java
-  #redis
-  redis:
-    host: 120.0.0.1
-    password:
-    port: 6379
-    jedis:
-      pool:
-        max-idle: 300
-        max-wait: -1
-  datasource:
-    druid:
-      url: jdbc:mysql://120.0.0.1:3306/boot?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
-      username: root
-      password: 1128
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      initial-size: 5
-      min-idle: 5
-      max-active: 20
-      max-wait: 60000
-      time-between-eviction-runs-millis: 60000
-      min-evictable-idle-time-millis: 300000
-      test-while-idle: on
-      test-on-borrow: false
-      test-on-return: false
-      pool-prepared-statements: on
-      max-open-prepared-statements: 20
-      max-pool-prepared-statement-per-connection-size: 20
-  profiles:
-    active: dev
-#mybatis配置
-mybatis-plus:
-  type-aliases-package: com.itkee.app.pojo
-  mapper-locations: classpath:mapper/*.xml
-  configuration:
-    cache-enabled: on
-    lazy-loading-enabled: on
-    map-underscore-to-camel-case: on
-  global-config:
-    db-config:
-      id-type: auto
-      logic-delete-value: 1
-      logic-not-delete-value: 0
+  port: 9090
 
-
+jwt:
+  secret: A0B1C2D3E4F5G6H7I8J9KALBMCNDOEPFQ0R1S2T3U4V5W6X7Y8Z9
+  expire: 30000
+  authorised-urls: /api/**

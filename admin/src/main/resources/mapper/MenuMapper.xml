@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itkee.admin.mapper.MenuMapper">
+    <select id="getMenus" resultType="com.itkee.admin.entity.dto.MenuDTO">
+        select m.id as menuId,m.enable,m.path,m.name,m.code,m.create_time,m.icon,m.parentId,
+        (select name from menu where id = m.parentId) as parentName,
+        if(1 = (select 1 from menu where parentId = m.id limit 1), true, false ) hasChild
+        from menu m where m.deleted = ${@com.itkee.admin.constant.Constant@NOT_DELETED} order by m.sort asc,m.create_time asc
+    </select>
+    <update id="enableMenuWithIds">
+        update menu set enable = #{enable} where id in (${ids})
+    </update>
+    <select id="selectCountMenuWithName" resultType="int">
+        select count(name) from menu where name = #{name} and deleted = ${@com.itkee.admin.constant.Constant@NOT_DELETED}
+    </select>
+    <select id="getMenusBtnList" resultType="com.itkee.admin.entity.dto.MenuButtonDTO">
+        select m.id,m.name,m.parentId
+        from menu m where m.deleted = ${@com.itkee.admin.constant.Constant@NOT_DELETED}
+        and m.enable = ${@com.itkee.admin.constant.Constant@ENABLE}
+        order by m.sort asc,m.create_time desc
+    </select>
+    <select id="getMenuCheckKeys" resultType="java.lang.Integer">
+        select menuId from role_menu rm inner join menu m on rm.menuId = m.id where rm.roleId = #{roleId} and m.parentId is not null
+    </select>
+    <select id="getMenuBtns" resultType="com.itkee.admin.entity.dto.MenuButtonDTO">
+        select m.id,m.name
+        from menu m where
+        m.deleted = ${@com.itkee.admin.constant.Constant@NOT_DELETED}
+        and m.parentId = #{menuId}
+    </select>
+</mapper>

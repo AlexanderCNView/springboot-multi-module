@@ -9,8 +9,8 @@ import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.io.IOException;
 
@@ -19,10 +19,10 @@ import java.io.IOException;
  */
 
 @Slf4j
-@RestControllerAdvice
+@ControllerAdvice
 public class GlobalExceptionHandler {
 
-    private static final String logExceptionFormat = "Capture Exception By GlobalExceptionHandler: Code: %s Detail: %s";
+    private static final String LOG_EXCEPTION_FORMAT = "Capture Exception By GlobalExceptionHandler: Code: %s Detail: %s";
 
     /**
      * 运行时异常
@@ -36,7 +36,7 @@ public class GlobalExceptionHandler {
     /**
      * 空指针异常
      * @param ex
-     * @return
+     * @return BaseResult
      */
     @ExceptionHandler(NullPointerException.class)
     public BaseResult nullPointerExceptionHandler(NullPointerException ex) {
@@ -157,7 +157,7 @@ public class GlobalExceptionHandler {
     }
 
     private <T extends Throwable> BaseResult resultFormat(Integer code, T ex) {
-        log.error(String.format(logExceptionFormat, code, ex.getMessage()));
+        log.error(String.format(LOG_EXCEPTION_FORMAT, code, ex.getMessage()));
         return BaseResult.builder().code(code).msg(ex.getMessage()).build();
     }
 }

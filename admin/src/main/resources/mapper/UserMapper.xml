@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itkee.admin.mapper.UserMapper">
+    <resultMap type="com.itkee.admin.entity.dto.UserInfoDTO" id="userInfoDto">
+        <result column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="avatar" property="avatar" jdbcType="VARCHAR"/>
+        <collection property="menuList" column="menuId" javaType="ArrayList" ofType="com.itkee.admin.entity.dto.MenuDTO">
+            <result column="name" property="name" jdbcType="VARCHAR"/>
+            <result column="menuId" property="menuId" jdbcType="INTEGER"/>
+            <result column="path" property="path" jdbcType="VARCHAR"/>
+            <result column="hidden" property="hidden" jdbcType="INTEGER"/>
+            <result column="keeplive" property="keeplive" jdbcType="INTEGER"/>
+            <result column="icon" property="icon" jdbcType="VARCHAR"/>
+            <result column="parentId" property="parentId" jdbcType="INTEGER"/>
+        </collection>
+    </resultMap>
+
+    <resultMap type="com.itkee.admin.entity.dto.UserInfoDTO" id="godUserDto">
+        <result column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="avatar" property="avatar" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="login" parameterType="String" resultType="com.itkee.admin.pojo.SysUser">
+        select * from sys_user where username=#{username}
+        and password=#{password}
+    </select>
+
+    <select id="getUserByUserId" parameterType="Integer" resultMap="userInfoDto">
+        select u.avatar ,u.username, ur.id roleId, rm.menuId from sys_user u
+        left join user_role ur on u.id = ur.id
+        left join role_menu rm on ur.id = rm.roleId
+        where u.id = #{userId}
+    </select>
+
+    <select id="getGodUser" parameterType="Integer" resultMap="godUserDto">
+        select u.avatar ,u.username from sys_user u
+        where u.id = #{userId}
+    </select>
+
+    <select id="getUserRoleByUserId" resultType="com.itkee.admin.pojo.UserRole">
+        select * from user_role ur left join role r on ur.roleId = r.id where userId = #{userId}
+        and r.enable = ${@com.itkee.admin.constant.Constant@ENABLE}
+        and r.deleted = ${@com.itkee.admin.constant.Constant@NOT_DELETED}
+        limit 1
+    </select>
+
+    <select id="getGodMenus" resultType="com.itkee.admin.entity.dto.MenuDTO">
+        select id menuId, name, icon, path, keeplive, hidden, parentId from menu
+    </select>
+</mapper>

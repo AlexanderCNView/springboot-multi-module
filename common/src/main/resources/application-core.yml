@@ -1,0 +1,54 @@
+
+project:
+  ip: 127.0.0.1
+
+
+#logging:
+#  config: classpath:log4j2-spring.xml
+spring:
+  devtools:
+    restart:
+      enabled: false
+      #设置重启目录
+      additional-paths: src/main/java
+  #redis
+  redis:
+    host: ${project.ip}
+    password:
+    port: 6379
+    jedis:
+      pool:
+        max-idle: 300
+        max-wait: -1
+  datasource:
+    druid:
+      url: jdbc:mysql://${project.ip}:3306/smart_mall?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+      username: root
+      password: 19921128
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      test-while-idle: on
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: on
+      max-open-prepared-statements: 20
+      max-pool-prepared-statement-per-connection-size: 20
+#mybatis配置
+mybatis-plus:
+  type-aliases-package: com.itkee.*.pojo
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    lazy-loading-enabled: on
+    map-underscore-to-camel-case: on
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+
